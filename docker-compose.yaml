@@ -1,0 +1,24 @@
+version: '3.8'
+
+networks:
+  digitalfix-net:
+    external: true
+    name: digitalfix-net
+
+services:
+  ms-catalog:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ms-catalog-service
+    ports:
+      - "${APP_PORT:-8084}:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS:-http://localhost:4200}
+    volumes:
+      - ./wallet:/app/wallet:ro
+    networks:
+      - digitalfix-net

@@ -1,0 +1,48 @@
+# Swagger UI - Documentación de la API: http://localhost:8084/swagger-ui.html
+
+spring:
+  application:
+    name: digitalfix-ms-catalog
+
+  # Carga el archivo .env de la raiz del proyecto (si existe)
+  config:
+    import: optional:file:.env[.properties]
+
+  datasource:
+    # Definida en .env, ej: jdbc:oracle:thin:@<alias>_high?TNS_ADMIN=./wallet
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: oracle.jdbc.OracleDriver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      idle-timeout: 30000
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.OracleDialect
+        format_sql: true
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    baseline-version: 0
+    table: flyway_schema_history_catalog
+    locations: classpath:db/migration
+
+# Puerto local configurable desde .env (SERVER_PORT)
+server:
+  port: ${SERVER_PORT:8084}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+    display-request-duration: true
