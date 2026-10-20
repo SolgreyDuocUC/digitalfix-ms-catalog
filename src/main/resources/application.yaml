@@ -46,3 +46,9 @@ springdoc:
     tags-sorter: alpha
     operations-sorter: alpha
     display-request-duration: true
+
+# ms-user: fuente del rol de negocio (USUARIOS/ROLES) para la autorizacion por rol.
+# En Docker MS_USER_URL apunta al contenedor (http://ms-user-service:8082).
+digitalfix:
+  ms-user:
+    url: ${MS_USER_URL:http://localhost:8082}

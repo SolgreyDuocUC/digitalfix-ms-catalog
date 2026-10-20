@@ -13,11 +13,18 @@ services:
     container_name: ms-catalog-service
     ports:
       - "${APP_PORT:-8084}:8080"
+    env_file:
+      - .env
     environment:
       - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
       - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
       - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
       - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS:-http://localhost:4200}
+      - AZURE_TENANT_ID=${AZURE_TENANT_ID}
+      - AZURE_CLIENT_ID=${AZURE_CLIENT_ID}
+      # ms-user en la red digitalfix-net (nombre del servicio/contenedor)
+      - MS_USER_URL=${MS_USER_URL:-http://ms-user-service:8082}
+      - JAVA_OPTS=-Djava.net.preferIPv4Stack=true
     volumes:
       - ./wallet:/app/wallet:ro
     networks:
