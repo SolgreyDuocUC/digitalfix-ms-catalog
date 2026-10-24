@@ -25,6 +25,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.OracleDialect
+        # Relaciones LAZY en lotes de hasta 100 (IN) en vez de una consulta por fila: evita el N+1
+        # en los listados, que contra Oracle Autonomous cuesta ~40 ms de red por consulta.
+        default_batch_fetch_size: 100
         format_sql: true
 
   flyway:
