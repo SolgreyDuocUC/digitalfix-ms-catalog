@@ -1,4 +1,4 @@
-# Swagger UI - Documentación de la API: http://localhost:8084/swagger-ui.html
+# Swagger UI - Documentación de la API: http://localhost:8088/swagger-ui.html
 
 spring:
   application:
@@ -34,9 +34,10 @@ spring:
     table: flyway_schema_history_catalog
     locations: classpath:db/migration
 
-# Puerto local configurable desde .env (SERVER_PORT)
+# Puerto local configurable desde .env (SERVER_PORT=8088; el 8084 es de ms-admin-queues y el 8086 está reservado para ms-report).
+# En Docker queda en 8080 y solo es accesible por la red interna (BFF y ms-workorders).
 server:
-  port: ${SERVER_PORT:8084}
+  port: ${SERVER_PORT:8088}
 
 springdoc:
   api-docs:

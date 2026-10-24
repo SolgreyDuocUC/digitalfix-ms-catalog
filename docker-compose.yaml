@@ -12,7 +12,7 @@ services:
       dockerfile: Dockerfile
     container_name: ms-catalog-service
     ports:
-      - "${APP_PORT:-8084}:8080"
+      - "${APP_PORT:-8088}:8080"
     env_file:
       - .env
     environment:

@@ -23,16 +23,17 @@ import java.util.List;
 import java.util.Set;
 
 // Misma validación del JWT y mismo modelo de roles que ms-login, ms-user y
-// ms-workorders. El servicio aún no tiene endpoints: las reglas quedan listas
-// para que la API nazca protegida.
+// ms-workorders.
 //
 // Validación del token de Entra ID:
 //   - Firma con las claves públicas (JWKS) del tenant; vigencia ("exp", "nbf").
 //   - Issuer del tenant (formato v2 o v1) y audience = client ID de la API.
 //
 // Autorización por rol según el caso (módulo Catálogo y pantalla /catalog):
-//   - Consultar servicios, repuestos y stock: Admin y Supervisor.
-//   - CRUD de servicios técnicos, tarifas y stock: Admin.
+//   - Consultar repuestos, stock e historial: Admin y Supervisor.
+//   - Salidas y devoluciones de stock por orden: Admin y Supervisor. Las pide
+//     ms-workorders reenviando el JWT de quien asigna la orden (un Supervisor).
+//   - CRUD de repuestos y reposición de stock: Admin.
 //   - SUPERADMIN hereda todos los roles (RoleHierarchy).
 @Configuration
 @EnableWebSecurity
@@ -67,7 +68,11 @@ public class SecurityConfig {
                         /** CATÁLOGO – consulta */
                         .requestMatchers(HttpMethod.GET, "/api/catalog/**").hasAnyRole("ADMIN", "SUPERVISOR")
 
-                        /** CATÁLOGO – CRUD de servicios, tarifas y stock */
+                        /** STOCK – salidas y devoluciones al operar una orden de trabajo */
+                        .requestMatchers(HttpMethod.POST, "/api/catalog/stock/salidas", "/api/catalog/stock/devoluciones")
+                                .hasAnyRole("ADMIN", "SUPERVISOR")
+
+                        /** CATÁLOGO – CRUD de repuestos y reposición de stock */
                         .requestMatchers("/api/catalog/**").hasRole("ADMIN")
 
                         /** RESTO */
