@@ -23,3 +23,4 @@ public interface ProveedorRepository extends JpaRepository<Proveedor, Long> {
 
     List<Proveedor> findByTipoProveedorAndActivoTrue(TipoProveedor tipoProveedor);
 }
+

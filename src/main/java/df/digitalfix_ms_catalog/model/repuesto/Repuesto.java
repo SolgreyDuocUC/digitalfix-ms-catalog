@@ -82,11 +82,25 @@ public class Repuesto extends EntidadAuditable {
     @Column(name = "ACTIVO", nullable = false)
     private boolean activo = true;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_PROVEEDOR", foreignKey = @ForeignKey(name = "FK_REPUESTO_PROVEEDOR"))
+    private df.digitalfix_ms_catalog.model.proveedor.Proveedor proveedor;
+
     public Repuesto(String codigo, String nombre, String descripcion, UnidadMedida unidadMedida,
                     BigDecimal precioUnitario, int stockMinimo) {
+        this(codigo, nombre, descripcion, unidadMedida, precioUnitario, stockMinimo, null);
+    }
+
+    public Repuesto(String codigo, String nombre, String descripcion, UnidadMedida unidadMedida,
+                    BigDecimal precioUnitario, int stockMinimo, df.digitalfix_ms_catalog.model.proveedor.Proveedor proveedor) {
         this.codigo = Objects.requireNonNull(codigo, "El código es obligatorio");
         this.stockDisponible = 0;
+        this.proveedor = proveedor;
         actualizarDatos(nombre, descripcion, unidadMedida, precioUnitario, stockMinimo);
+    }
+
+    public void asignarProveedor(df.digitalfix_ms_catalog.model.proveedor.Proveedor proveedor) {
+        this.proveedor = proveedor;
     }
 
     public void actualizarDatos(String nombre, String descripcion, UnidadMedida unidadMedida,

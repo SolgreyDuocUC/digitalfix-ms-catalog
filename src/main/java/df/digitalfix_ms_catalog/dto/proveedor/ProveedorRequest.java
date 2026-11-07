@@ -31,3 +31,4 @@ public record ProveedorRequest(
         @Size(max = 150, message = "La dirección no puede exceder 150 caracteres")
         String direccion
 ) {}
+

@@ -11,3 +11,4 @@ public enum TipoProveedor {
     /** Proveedor integral que suministra tanto repuestos como servicios en terreno. */
     MIXTO
 }
+
