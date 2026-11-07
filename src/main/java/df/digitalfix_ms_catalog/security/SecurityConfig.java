@@ -65,6 +65,10 @@ public class SecurityConfig {
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
+                        /** ENDPOINTS PÚBLICOS / B2C (Portal Cliente y Vendedores) */
+                        .requestMatchers(HttpMethod.GET, "/api/catalog/products/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/catalog/products/stock/verify").permitAll()
+
                         /** CATÁLOGO – consulta */
                         .requestMatchers(HttpMethod.GET, "/api/catalog/**").hasAnyRole("ADMIN", "SUPERVISOR")
 
