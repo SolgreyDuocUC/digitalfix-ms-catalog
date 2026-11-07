@@ -1,7 +1,7 @@
 package df.digitalfix_ms_catalog.dto.repuesto;
 
 import df.digitalfix_ms_catalog.model.repuesto.Repuesto;
-import df.digitalfix_ms_catalog.model.repuesto.UnidadMedida;
+import df.digitalfix_ms_catalog.model.enums.UnidadMedida;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

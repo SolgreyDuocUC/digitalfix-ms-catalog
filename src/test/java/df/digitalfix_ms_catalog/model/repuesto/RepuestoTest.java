@@ -2,6 +2,9 @@ package df.digitalfix_ms_catalog.model.repuesto;
 
 import df.digitalfix_ms_catalog.model.common.DatoInvalidoException;
 import df.digitalfix_ms_catalog.model.common.OperacionNoPermitidaException;
+import df.digitalfix_ms_catalog.model.enums.TipoMovimiento;
+import df.digitalfix_ms_catalog.model.enums.UnidadMedida;
+import df.digitalfix_ms_catalog.model.exception.StockInsuficienteException;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

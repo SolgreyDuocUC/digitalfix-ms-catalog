@@ -1,6 +1,6 @@
 package df.digitalfix_ms_catalog.dto.repuesto;
 
-import df.digitalfix_ms_catalog.model.repuesto.UnidadMedida;
+import df.digitalfix_ms_catalog.model.enums.UnidadMedida;
 import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;

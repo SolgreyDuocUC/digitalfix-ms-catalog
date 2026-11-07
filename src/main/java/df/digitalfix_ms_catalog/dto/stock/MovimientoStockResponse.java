@@ -1,7 +1,7 @@
 package df.digitalfix_ms_catalog.dto.stock;
 
 import df.digitalfix_ms_catalog.model.repuesto.MovimientoStock;
-import df.digitalfix_ms_catalog.model.repuesto.TipoMovimiento;
+import df.digitalfix_ms_catalog.model.enums.TipoMovimiento;
 
 import java.time.LocalDateTime;
 

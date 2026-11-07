@@ -6,7 +6,7 @@ import df.digitalfix_ms_catalog.dto.stock.MovimientoStockResponse;
 import df.digitalfix_ms_catalog.model.common.DatoInvalidoException;
 import df.digitalfix_ms_catalog.model.repuesto.MovimientoStock;
 import df.digitalfix_ms_catalog.model.repuesto.Repuesto;
-import df.digitalfix_ms_catalog.model.repuesto.TipoMovimiento;
+import df.digitalfix_ms_catalog.model.enums.TipoMovimiento;
 import df.digitalfix_ms_catalog.repository.MovimientoStockRepository;
 import df.digitalfix_ms_catalog.repository.RepuestoRepository;
 import df.digitalfix_ms_catalog.security.UsuarioActual;

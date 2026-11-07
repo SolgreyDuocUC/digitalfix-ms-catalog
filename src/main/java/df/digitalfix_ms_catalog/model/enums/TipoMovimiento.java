@@ -1,4 +1,4 @@
-package df.digitalfix_ms_catalog.model.repuesto;
+package df.digitalfix_ms_catalog.model.enums;
 
 /**
  * Motivo de un cambio de stock. Cada cambio queda en MOVIMIENTO_STOCK, así el stock actual

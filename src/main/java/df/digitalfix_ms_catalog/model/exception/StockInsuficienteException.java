@@ -1,4 +1,4 @@
-package df.digitalfix_ms_catalog.model.repuesto;
+package df.digitalfix_ms_catalog.model.exception;
 
 import df.digitalfix_ms_catalog.model.common.OperacionNoPermitidaException;
 

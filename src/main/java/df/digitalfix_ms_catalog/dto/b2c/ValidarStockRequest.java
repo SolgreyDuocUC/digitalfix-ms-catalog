@@ -19,3 +19,4 @@ public record ValidarStockRequest(
             Integer cantidad
     ) {}
 }
+

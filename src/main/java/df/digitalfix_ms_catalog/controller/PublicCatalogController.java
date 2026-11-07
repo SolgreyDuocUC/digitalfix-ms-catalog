@@ -96,3 +96,4 @@ public class PublicCatalogController {
         return ResponseEntity.ok(new ValidarStockResponse(todoDisponible, mensaje, detalles));
     }
 }
+

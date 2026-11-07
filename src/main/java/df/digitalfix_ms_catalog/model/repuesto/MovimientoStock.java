@@ -1,6 +1,7 @@
 package df.digitalfix_ms_catalog.model.repuesto;
 
 import df.digitalfix_ms_catalog.model.common.SanitizadorTexto;
+import df.digitalfix_ms_catalog.model.enums.TipoMovimiento;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
