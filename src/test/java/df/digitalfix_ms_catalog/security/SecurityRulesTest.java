@@ -13,8 +13,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 // Solo se prueba la capa de seguridad: "controllers" apunta a una clase que no es controlador,
@@ -43,19 +45,25 @@ class SecurityRulesTest {
     }
 
     @Test
-    void supervisorConsultaPeroNoModificaElCatalogo() throws Exception {
+    void supervisorYAdminModificanElCatalogoYReponenStock() throws Exception {
         mockMvc.perform(as(get("/api/catalog/repuestos"), "SUPERVISOR")).andExpect(status().isNotFound());
-        mockMvc.perform(as(post("/api/catalog/repuestos"), "SUPERVISOR")).andExpect(status().isForbidden());
+        mockMvc.perform(as(post("/api/catalog/repuestos"), "SUPERVISOR")).andExpect(status().isNotFound());
+        mockMvc.perform(as(put("/api/catalog/repuestos/1"), "SUPERVISOR")).andExpect(status().isNotFound());
+        mockMvc.perform(as(delete("/api/catalog/repuestos/1"), "SUPERVISOR")).andExpect(status().isNotFound());
+        mockMvc.perform(as(post("/api/catalog/repuestos/1/entradas"), "SUPERVISOR")).andExpect(status().isNotFound());
     }
 
     @Test
-    void clienteNoAccedeAlCatalogo() throws Exception {
+    void clienteYTecnicoNoAccedenAlCatalogo() throws Exception {
         mockMvc.perform(as(get("/api/catalog/repuestos"), "CLIENTE")).andExpect(status().isForbidden());
+        mockMvc.perform(as(post("/api/catalog/repuestos"), "TECNICO")).andExpect(status().isForbidden());
+        mockMvc.perform(as(put("/api/catalog/repuestos/1"), "TECNICO")).andExpect(status().isForbidden());
     }
 
     @Test
     void adminYSuperadminAdministranElCatalogo() throws Exception {
         mockMvc.perform(as(post("/api/catalog/repuestos"), "ADMIN")).andExpect(status().isNotFound());
+        mockMvc.perform(as(put("/api/catalog/repuestos/1"), "ADMIN")).andExpect(status().isNotFound());
         mockMvc.perform(as(post("/api/catalog/repuestos"), "SUPERADMIN")).andExpect(status().isNotFound());
     }
 
@@ -66,8 +74,8 @@ class SecurityRulesTest {
     }
 
     @Test
-    void supervisorNoRepoStockManualmente() throws Exception {
-        mockMvc.perform(as(post("/api/catalog/repuestos/1/entradas"), "SUPERVISOR")).andExpect(status().isForbidden());
+    void supervisorNoAdministraProveedores() throws Exception {
+        mockMvc.perform(as(post("/api/catalog/proveedores"), "SUPERVISOR")).andExpect(status().isForbidden());
     }
 
     @Test

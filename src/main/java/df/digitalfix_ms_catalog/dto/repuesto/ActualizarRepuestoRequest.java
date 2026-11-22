@@ -5,8 +5,8 @@ import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 
-// El código no cambia y el stock no se edita aquí: sólo se mueve con entradas, salidas y
-// devoluciones, para que cada cambio quede registrado en MOVIMIENTO_STOCK.
+// El código no cambia. Si se envía stockDisponible, el servicio registra automáticamente un
+// movimiento de ajuste en MOVIMIENTO_STOCK para mantener la trazabilidad del inventario.
 public record ActualizarRepuestoRequest(
         @NotBlank(message = "El nombre es obligatorio")
         @Size(max = 100, message = "El nombre no puede exceder 100 caracteres")
@@ -29,6 +29,10 @@ public record ActualizarRepuestoRequest(
         Integer stockMinimo,
 
         @NotNull(message = "Indique si el repuesto está activo")
-        Boolean activo
+        Boolean activo,
+
+        @PositiveOrZero(message = "El stock disponible no puede ser negativo")
+        @Max(value = 9_999_999, message = "El stock excede el máximo permitido")
+        Integer stockDisponible
 ) {
 }

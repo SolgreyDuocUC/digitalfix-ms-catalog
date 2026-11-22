@@ -81,4 +81,32 @@ class RepuestoTest {
         assertThat(repuesto.getNombre()).isEqualTo("Interruptor 2x16A");
         assertThat(repuesto.getStockDisponible()).isZero();
     }
+
+    @Test
+    void ajustarStockRegistraMovimientoSegunDiferencia() {
+        Repuesto repuesto = repuestoConStock(10);
+
+        var sinCambio = repuesto.ajustarStock(10, "Ajuste desde catálogo", "supervisor@digitalfix.cl");
+        assertThat(sinCambio).isEmpty();
+        assertThat(repuesto.getStockDisponible()).isEqualTo(10);
+
+        var entrada = repuesto.ajustarStock(15, "Ajuste desde catálogo", "supervisor@digitalfix.cl");
+        assertThat(entrada).isPresent();
+        assertThat(entrada.get().getTipo()).isEqualTo(TipoMovimiento.ENTRADA);
+        assertThat(entrada.get().getCantidad()).isEqualTo(5);
+        assertThat(entrada.get().getStockResultante()).isEqualTo(15);
+
+        var salida = repuesto.ajustarStock(4, "Ajuste desde catálogo", "supervisor@digitalfix.cl");
+        assertThat(salida).isPresent();
+        assertThat(salida.get().getTipo()).isEqualTo(TipoMovimiento.SALIDA);
+        assertThat(salida.get().getCantidad()).isEqualTo(11);
+        assertThat(salida.get().getStockResultante()).isEqualTo(4);
+    }
+
+    @Test
+    void ajustarStockNegativoSeRechaza() {
+        Repuesto repuesto = repuestoConStock(5);
+        assertThatThrownBy(() -> repuesto.ajustarStock(-1, "Ajuste desde catálogo", "test"))
+                .isInstanceOf(DatoInvalidoException.class);
+    }
 }

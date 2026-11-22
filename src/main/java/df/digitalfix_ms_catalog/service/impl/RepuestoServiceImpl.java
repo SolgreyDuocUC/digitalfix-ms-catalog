@@ -25,6 +25,7 @@ public class RepuestoServiceImpl implements RepuestoService {
 
     private static final String PREFIJO_CODIGO = "REP-";
     private static final String REFERENCIA_STOCK_INICIAL = "Stock inicial";
+    private static final String REFERENCIA_AJUSTE_CATALOGO = "Ajuste desde catálogo";
 
     private final RepuestoRepository repuestoRepository;
     private final MovimientoStockRepository movimientoStockRepository;
@@ -73,6 +74,10 @@ public class RepuestoServiceImpl implements RepuestoService {
             repuesto.activar();
         } else {
             repuesto.desactivar();
+        }
+        if (request.stockDisponible() != null) {
+            repuesto.ajustarStock(request.stockDisponible(), REFERENCIA_AJUSTE_CATALOGO, UsuarioActual.identificador())
+                    .ifPresent(movimientoStockRepository::save);
         }
         return RepuestoResponse.from(repuestoRepository.saveAndFlush(repuesto));
     }

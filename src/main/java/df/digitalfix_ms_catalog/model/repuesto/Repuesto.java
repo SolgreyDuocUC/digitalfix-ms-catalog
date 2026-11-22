@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Repuesto del catálogo con su stock (tabla REPUESTO). ms-workorders lo referencia por
@@ -153,6 +154,18 @@ public class Repuesto extends EntidadAuditable {
         validarCantidad(cantidad, 1, "La cantidad");
         this.stockDisponible = Math.min(STOCK_MAXIMO, stockDisponible + cantidad);
         return new MovimientoStock(this, TipoMovimiento.DEVOLUCION, cantidad, referencia, usuario);
+    }
+
+    /** Ajuste directo desde actualización de catálogo, conservando trazabilidad en MOVIMIENTO_STOCK. */
+    public Optional<MovimientoStock> ajustarStock(int nuevoStock, String referencia, String usuario) {
+        validarCantidad(nuevoStock, 0, "El stock disponible");
+        int diferencia = nuevoStock - this.stockDisponible;
+        if (diferencia == 0) {
+            return Optional.empty();
+        }
+        this.stockDisponible = nuevoStock;
+        TipoMovimiento tipo = diferencia > 0 ? TipoMovimiento.ENTRADA : TipoMovimiento.SALIDA;
+        return Optional.of(new MovimientoStock(this, tipo, Math.abs(diferencia), referencia, usuario));
     }
 
     private static int validarCantidad(int cantidad, int minimo, String campo) {

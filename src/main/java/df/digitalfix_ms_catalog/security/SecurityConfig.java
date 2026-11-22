@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -33,10 +34,11 @@ import java.util.Set;
 //   - Consultar repuestos, stock e historial: Admin y Supervisor.
 //   - Salidas y devoluciones de stock por orden: Admin y Supervisor. Las pide
 //     ms-workorders reenviando el JWT de quien asigna la orden (un Supervisor).
-//   - CRUD de repuestos y reposición de stock: Admin.
+//   - CRUD de repuestos y reposición de stock: Admin y Supervisor.
 //   - SUPERADMIN hereda todos los roles (RoleHierarchy).
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -77,6 +79,9 @@ public class SecurityConfig {
                                 .hasAnyRole("ADMIN", "SUPERVISOR")
 
                         /** CATÁLOGO – CRUD de repuestos y reposición de stock */
+                        .requestMatchers("/api/catalog/repuestos/**").hasAnyRole("ADMIN", "SUPERVISOR")
+
+                        /** RESTO DEL CATÁLOGO (ej. proveedores) */
                         .requestMatchers("/api/catalog/**").hasRole("ADMIN")
 
                         /** RESTO */

@@ -14,6 +14,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class RepuestoController {
     private final StockService stockService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('SUPERVISOR', 'ADMIN')")
     @Operation(summary = "Crear un repuesto",
             description = "Registra un repuesto; el código (REP-0001...) lo genera el sistema. El stock inicial queda como movimiento ENTRADA.")
     public ResponseEntity<RepuestoResponse> crear(@Valid @RequestBody RepuestoRequest request) {
@@ -50,8 +52,9 @@ public class RepuestoController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('SUPERVISOR', 'ADMIN')")
     @Operation(summary = "Actualizar repuesto",
-            description = "Modifica nombre, descripción, unidad, precio, stock mínimo o si está activo. El código y el stock no se editan aquí.")
+            description = "Modifica nombre, descripción, unidad, precio, stock mínimo, estado activo y opcionalmente stock disponible (registrando movimiento de ajuste en MOVIMIENTO_STOCK).")
     public ResponseEntity<RepuestoResponse> actualizar(
             @PathVariable @Positive Long id,
             @Valid @RequestBody ActualizarRepuestoRequest request) {
@@ -59,6 +62,7 @@ public class RepuestoController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('SUPERVISOR', 'ADMIN')")
     @Operation(summary = "Eliminar repuesto", description = "Elimina un repuesto sin movimientos de stock; si ya tiene, responde 409.")
     public ResponseEntity<Void> eliminar(@PathVariable @Positive Long id) {
         repuestoService.eliminar(id);
@@ -66,6 +70,7 @@ public class RepuestoController {
     }
 
     @PostMapping("/{id}/entradas")
+    @PreAuthorize("hasAnyRole('SUPERVISOR', 'ADMIN')")
     @Operation(summary = "Reponer stock", description = "Suma stock al repuesto (movimiento ENTRADA) con la referencia de la guía o factura.")
     public ResponseEntity<MovimientoStockResponse> registrarEntrada(
             @PathVariable @Positive Long id,
