@@ -2,6 +2,7 @@ package df.digitalfix_ms_catalog.repository;
 
 import df.digitalfix_ms_catalog.model.repuesto.Repuesto;
 import jakarta.persistence.LockModeType;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
@@ -24,6 +25,20 @@ public interface RepuestoRepository extends JpaRepository<Repuesto, Long> {
     List<Repuesto> findAllByOrderByNombreAsc();
 
     List<Repuesto> findByActivoTrueOrderByNombreAsc();
+
+    List<Repuesto> findByNombreContainingIgnoreCase(String nombre, Sort sort);
+
+    @Query("""
+            select r from Repuesto r
+            where (:soloActivos = false or r.activo = true)
+              and (:bajoStock = false or r.stockDisponible <= r.stockMinimo)
+              and (:search is null or lower(r.nombre) like lower(concat('%', :search, '%')))
+            """)
+    List<Repuesto> buscarConFiltros(
+            @Param("soloActivos") boolean soloActivos,
+            @Param("bajoStock") boolean bajoStock,
+            @Param("search") String search,
+            Sort sort);
 
     @Query("select r from Repuesto r where r.stockDisponible <= r.stockMinimo order by r.stockDisponible asc")
     List<Repuesto> findBajoStockMinimo();

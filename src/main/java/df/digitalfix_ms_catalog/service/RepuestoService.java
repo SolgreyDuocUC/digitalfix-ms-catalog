@@ -11,7 +11,11 @@ public interface RepuestoService {
 
     RepuestoResponse crear(RepuestoRequest request);
 
-    List<RepuestoResponse> listar(boolean soloActivos, boolean bajoStock);
+    List<RepuestoResponse> listar(boolean soloActivos, boolean bajoStock, String search, String sortDirection);
+
+    default List<RepuestoResponse> listar(boolean soloActivos, boolean bajoStock) {
+        return listar(soloActivos, bajoStock, null, "asc");
+    }
 
     RepuestoResponse buscarPorId(Long id);
 

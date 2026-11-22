@@ -38,11 +38,13 @@ public class RepuestoController {
 
     @GetMapping
     @Operation(summary = "Listar repuestos",
-            description = "Ordenados por nombre. soloActivos=true: los que se pueden agregar a una orden. bajoStock=true: los que están en o bajo su stock mínimo.")
+            description = "Filtra por nombre (search, insensible a mayúsculas), soloActivos=true y bajoStock=true, y ordena por nombre (sort=asc|desc, por defecto asc).")
     public ResponseEntity<List<RepuestoResponse>> listar(
             @RequestParam(defaultValue = "false") boolean soloActivos,
-            @RequestParam(defaultValue = "false") boolean bajoStock) {
-        return ResponseEntity.ok(repuestoService.listar(soloActivos, bajoStock));
+            @RequestParam(defaultValue = "false") boolean bajoStock,
+            @RequestParam(required = false) String search,
+            @RequestParam(defaultValue = "asc") String sort) {
+        return ResponseEntity.ok(repuestoService.listar(soloActivos, bajoStock, search, sort));
     }
 
     @GetMapping("/{id}")

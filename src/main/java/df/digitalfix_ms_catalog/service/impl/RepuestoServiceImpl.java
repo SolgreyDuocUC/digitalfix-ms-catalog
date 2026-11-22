@@ -10,6 +10,7 @@ import df.digitalfix_ms_catalog.repository.RepuestoRepository;
 import df.digitalfix_ms_catalog.security.UsuarioActual;
 import df.digitalfix_ms_catalog.service.RepuestoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,18 +46,15 @@ public class RepuestoServiceImpl implements RepuestoService {
 
     /** {@code soloActivos}: lo que se puede agregar a una orden. {@code bajoStock}: lo que hay que reponer. */
     @Override
-    public List<RepuestoResponse> listar(boolean soloActivos, boolean bajoStock) {
-        List<Repuesto> repuestos;
-        if (bajoStock) {
-            repuestos = repuestoRepository.findBajoStockMinimo().stream()
-                    .filter(r -> !soloActivos || r.isActivo())
-                    .toList();
-        } else if (soloActivos) {
-            repuestos = repuestoRepository.findByActivoTrueOrderByNombreAsc();
-        } else {
-            repuestos = repuestoRepository.findAllByOrderByNombreAsc();
-        }
-        return repuestos.stream().map(RepuestoResponse::from).toList();
+    public List<RepuestoResponse> listar(boolean soloActivos, boolean bajoStock, String search, String sortDirection) {
+        Sort.Direction direction = "desc".equalsIgnoreCase(sortDirection)
+                ? Sort.Direction.DESC
+                : Sort.Direction.ASC;
+        String termino = (search == null || search.isBlank()) ? null : search.trim();
+        return repuestoRepository.buscarConFiltros(soloActivos, bajoStock, termino, Sort.by(direction, "nombre"))
+                .stream()
+                .map(RepuestoResponse::from)
+                .toList();
     }
 
     @Override
