@@ -83,6 +83,11 @@ public class GlobalExceptionHandler {
         return construir(HttpStatus.CONFLICT, "La operacion viola una restriccion de integridad de los datos", List.of());
     }
 
+    @ExceptionHandler(UnprocessableEntityException.class)
+    public ResponseEntity<ErrorResponse> handleUnprocessableEntityException(UnprocessableEntityException ex) {
+        return construir(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage(), List.of());
+    }
+
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<ErrorResponse> handleResponseStatusException(ResponseStatusException ex) {
         return construir(HttpStatus.valueOf(ex.getStatusCode().value()), ex.getReason(), List.of());

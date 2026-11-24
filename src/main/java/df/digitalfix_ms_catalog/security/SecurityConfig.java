@@ -70,7 +70,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/catalog/products/stock/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/catalog/stock/verify-and-hold", "/api/catalog/stock/release-hold").permitAll()
 
-                        /** CATÁLOGO – consulta */
+                        /** CATÁLOGO DE SERVICIOS Y REPUESTOS – lectura para Admin, Supervisor y Cliente */
+                        .requestMatchers(HttpMethod.GET, "/api/catalog/services", "/api/catalog/services/**")
+                                .hasAnyRole("ADMIN", "SUPERVISOR", "CLIENTE")
+
+                        /** CATÁLOGO – consulta general de repuestos */
                         .requestMatchers(HttpMethod.GET, "/api/catalog/**").hasAnyRole("ADMIN", "SUPERVISOR")
 
                         /** STOCK – salidas y devoluciones al operar una orden de trabajo */
