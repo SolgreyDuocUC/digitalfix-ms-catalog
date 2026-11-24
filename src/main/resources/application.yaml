@@ -16,7 +16,7 @@ spring:
     # Definida en .env, ej: jdbc:oracle:thin:@<alias>_low?TNS_ADMIN=./wallet
     url: ${SPRING_DATASOURCE_URL:${DB_URL:jdbc:oracle:thin:@clx44joct2djmlz9_low?TNS_ADMIN=./wallet}}
     username: ${SPRING_DATASOURCE_USERNAME:${DB_USERNAME:ADMIN}}
-    password: ${SPRING_DATASOURCE_PASSWORD:${DB_PASSWORD:Anastasia1106.}}
+    password: ${SPRING_DATASOURCE_PASSWORD:${DB_PASSWORD:GCAm7DF1520.}}
     driver-class-name: oracle.jdbc.OracleDriver
     hikari:
       maximum-pool-size: ${SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE:3}
