@@ -49,7 +49,7 @@ public class SecurityConfig {
     @Value("${AZURE_CLIENT_ID}")
     private String clientId;
 
-    @Value("${CORS_ALLOWED_ORIGINS:http://localhost:4200}")
+    @Value("${CORS_ALLOWED_ORIGINS:http://localhost:4200,http://localhost:5173}")
     private List<String> corsAllowedOrigins;
 
     @Bean
@@ -70,9 +70,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/catalog/products/stock/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/catalog/stock/verify-and-hold", "/api/catalog/stock/release-hold").permitAll()
 
-                        /** CATÁLOGO DE SERVICIOS Y REPUESTOS – lectura para Admin, Supervisor y Cliente */
+                        /** CATÁLOGO DE SERVICIOS Y REPUESTOS – lectura pública para consulta */
                         .requestMatchers(HttpMethod.GET, "/api/catalog/services", "/api/catalog/services/**")
-                                .hasAnyRole("ADMIN", "SUPERVISOR", "CLIENTE")
+                                .permitAll()
 
                         /** CATÁLOGO – consulta general de repuestos */
                         .requestMatchers(HttpMethod.GET, "/api/catalog/**").hasAnyRole("ADMIN", "SUPERVISOR")
